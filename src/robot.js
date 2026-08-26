@@ -227,13 +227,17 @@ const trayG = new T.Group();
     fin.position.set(0,.13,-.21+i*.07);
     jet.add(fin);
   }
-  const port = box(.12,.08,.16, matMetal()); port.position.set(.34,.06,-.3);
-  jet.add(pcb, hsB, port);
+  for (let i=0;i<3;i++){
+    const port = box(.1,.08,.1, matMetal());
+    port.position.set(.34, .06, -.36+i*.14);
+    jet.add(port);
+  }
+  jet.add(pcb, hsB);
   jet.position.set(-.28,.12,-.2);
   trayG.add(jet);
   const jl = textPlane("JETSON · QNX", .6, .12, "#ffe3c4", null, 42);
   jl.rotation.x = -Math.PI/2; jl.rotation.z = Math.PI;
-  jl.position.set(-.28,.16,.32); trayG.add(jl);
+  jl.position.set(0, .027, .2); jet.add(jl);
   // Nano Every (green)
   const nano = box(.32,.05,.5, matGreen()); nano.position.set(.44,.12,-.5);
   const chip = box(.14,.04,.14, matBlack()); chip.position.set(.44,.16,-.5);
