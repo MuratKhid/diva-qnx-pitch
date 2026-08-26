@@ -186,7 +186,8 @@ function seabedFrame(now, sc){
     b.rotation.z = b.userData.tz + Math.cos(now*.0009 + b.userData.ph)*.07;
   }
   // camera settles toward the boulders as you reach the floor
-  const el = (26 - sc*14)*Math.PI/180, dist = 17.5 - sc*3.5;
+  const el = (26 - sc*14)*Math.PI/180;
+  const dist = (17.5 - sc*3.5) * clamp(.78 / camC.aspect, 1, 1.5);
   const az = (-.14 + sc*.3) + (reduced ? 0 : Math.sin(now*.00007)*.05);
   camC.position.set(Math.sin(az)*Math.cos(el)*dist, 2.2 + Math.sin(el)*dist, Math.cos(az)*Math.cos(el)*dist);
   camC.lookAt(0, 1.8, 0);
@@ -273,10 +274,11 @@ function update(now, kOverride){
     const az = (180 + P.az) * Math.PI/180;
     const el = P.el * Math.PI/180;
     const tgt = _v.set(P.tx, P.ty, P.tz);
+    const dist = P.dist * clamp(.78 / camera.aspect, 1, 1.45);
     camera.position.set(
-      tgt.x + P.dist * Math.cos(el) * Math.sin(az),
-      tgt.y + P.dist * Math.sin(el),
-      tgt.z + P.dist * Math.cos(el) * Math.cos(az)
+      tgt.x + dist * Math.cos(el) * Math.sin(az),
+      tgt.y + dist * Math.sin(el),
+      tgt.z + dist * Math.cos(el) * Math.cos(az)
     );
     camera.lookAt(tgt.x, tgt.y, tgt.z);
 
