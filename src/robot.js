@@ -220,7 +220,7 @@ const trayG = new T.Group();
   }
   // Jetson (orange board + heatsink)
   const jet = new T.Group();
-  const pcb = box(.78,.05,.82, matOrange());
+  const pcb = box(.78,.05,.82, matOrange()); pcb.position.z = -.07;
   const hsB = box(.5,.05,.5, matMetal()); hsB.position.y = .06;
   for (let i=0;i<7;i++){
     const fin = box(.5,.1,.02, matMetal());
