@@ -2,7 +2,7 @@
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>
 <title>DIVA × QNX</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=6a762f4">
 
 <div class="bgfx" aria-hidden="true">
   <div class="grad-deep"></div>
@@ -43,7 +43,7 @@
     <div class="hero">
       <p class="eyebrow">Deepwater Investigation &amp; Visual Analysis</p>
       <h1><span class="hD">D</span><span class="hI">I</span><span class="hV">V</span><span class="hA">A</span></h1>
-      <p class="sub">A manta-ray inspired underwater glider that flies on buoyancy instead of propellers with real-time adaptive brain we want.</p>
+      <p class="sub">A manta ray inspired underwater glider that flies on buoyancy instead of propellers with real-time adaptive brain we want.</p>
       <div class="scrollcue"><button id="diveBtn" class="divebtn">Dive in</button><b></b></div>
     </div>
 
@@ -51,7 +51,7 @@
       <div class="plate">
         <p class="eyebrow">The Problem</p>
         <h3>The ocean outlasts every battery.</h3>
-        <p>75% of the seafloor is unmapped. Most underwater vehicles burn majority of their energy fighting drag with propellers. Unlike other underwater vehicles, DIVA uses the manta ray's mechanics, utilizing the wings to make moving nearly free.</p>
+        <p>According to US National Ocean Service, 75% of the seafloor is unmapped. Most underwater vehicles burn majority of their energy fighting drag with propellers. Unlike other underwater vehicles, DIVA uses the manta ray's mechanics, utilizing the wings to make moving nearly free.</p>
         <div class="statrow statrow-center">
           <div class="stat"><b>75%</b><span>ocean unmapped</span></div>
           <div class="stat"><b>0</b><span>propellers in cruise</span></div>
@@ -101,7 +101,7 @@
     <div class="lbl slot-r3" id="lb-vent" data-scene="s3" data-anchor="vent"><div class="plate"><h4>Ventral hull</h4><p>The waterproofing boundary through O-rings, gasket bead, and potted passthroughs.</p></div></div>
 
     <!-- labels: s4 -->
-    <div class="lbl slot-l1" id="lb-jetson" data-scene="s4" data-anchor="jetson"><div class="plate"><h4>Jetson Nano 8 GB</h4><p>Main computer — boots QNX Neutrino and hosts the vision pipeline.</p></div></div>
+    <div class="lbl slot-l1" id="lb-jetson" data-scene="s4" data-anchor="jetson"><div class="plate"><h4>Raspberry Pi 8 GB</h4><p>Main computer — boots QNX Neutrino and hosts the vision pipeline.</p></div></div>
     <div class="lbl slot-l2" id="lb-imu" data-scene="s4" data-anchor="imu"><div class="plate"><h4>BNO055 IMU</h4><p>Absolute orientation, streamed straight into the pitch loop.</p></div></div>
     <div class="lbl slot-r1" id="lb-bar30" data-scene="s4" data-anchor="bar30"><div class="plate"><h4>Bar30 depth</h4><p>Pressure to 300 m at mm resolution — the glider's altimeter.</p></div></div>
     <div class="lbl slot-r2" id="lb-lipo" data-scene="s4" data-anchor="lipo"><div class="plate"><h4>4S LiPo · 5,000 mAh</h4><p>14.8 V pack behind 5 V buck and 6 V UBEC rails.</p></div></div>
@@ -120,10 +120,9 @@
 
     <aside class="panel centerb" id="panel-s7">
       <div class="caprow">
-        <div class="capchip"><span class="eyebrow">Mission</span><b>Reef surveys, quietly</b><span>Two cameras and no thruster wash — population data without disturbing it.</span></div>
-        <div class="capchip"><span class="eyebrow">Endurance</span><b>Glide, don't burn</b><span>Propulsion from buoyancy cycles; energy goes to sensing and compute.</span></div>
+        <div class="capchip"><span class="eyebrow">Mission</span><b>Quietly surveys reef</b><span>Two cameras and no thruster distruption — obtain data without disturbing other aquatic life.</span></div>
+        <div class="capchip"><span class="eyebrow">Efficiency</span><b>Glides with low energy consumed</b><span>Propulsion from buoyancy cycles; energy goes to sensing and computing.</span></div>
         <div class="capchip"><span class="eyebrow">Robustness</span><b>Rigid where it counts</b><span>Hard hull, soft wings — tougher than fully soft-robotic submersibles.</span></div>
-        <div class="capchip"><span class="eyebrow">Proof</span><b>Pool-validated, Spring '27</b><span>Measured glide velocity and pitch vs. theory, on film.</span></div>
       </div>
     </aside>
 
@@ -241,7 +240,7 @@
       </div>
 
       <div class="q centered" id="q4">
-        <h2 class="q-title">Why QNX is essential — not optional</h2>
+        <h2 class="q-title">Why QNX is essential</h2>
         <div class="why3" style="text-align:left">
           <div class="why"><p class="eyebrow">Determinism</p><h4>Fixed-cadence control</h4><p>Priority scheduling and priority inheritance keep the pitch loop mathematically honest — glide ratio depends on it.</p></div>
           <div class="why"><p class="eyebrow">Isolation</p><h4>Crashes stay small</h4><p>User-space drivers and a sandboxed vision pipeline: a bug costs a frame, never the vehicle.</p></div>
@@ -281,7 +280,7 @@
       <div class="member"><i>Mechatronics · Controls</i><b>Murat Khidoyatov</b><span>Co-founder, Yale Undergraduate Robotics; science-missions lead; custom instruments and physical AI.</span></div>
       <div class="member"><i>Mechanics · CAD</i><b>Jordan Davis</b><span>Marine Physical Laboratory intern, Scripps Institution of Oceanography — bioacoustics research.</span></div>
       <div class="member"><i>Manufacturing</i><b>Nowyshin Mridula</b><span>Biomedical R&amp;D and manufacturing, King's College London School of Biomedical Engineering.</span></div>
-      <div class="member"><i>Soft robotics · Control</i><b>Chloe DeJoy</b><span>Undergraduate researcher, the Faboratory — soft robotic systems and control.</span></div>
+      <div class="member"><i>Soft robotics · Controls</i><b>Chloe DeJoy</b><span>Undergraduate researcher, the Faboratory — soft robotic systems and control.</span></div>
     </div>
 
     <footer>

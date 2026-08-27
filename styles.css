@@ -211,7 +211,7 @@
   .cap h3{font-family:var(--disp);font-stretch:120%;font-weight:800;font-size:clamp(19px,2.4vw,26px);margin-top:4px;text-shadow:0 1px 20px rgba(4,20,32,.9)}
 
   /* capability chips */
-  .caprow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .caprow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
   .capchip{border:1px solid var(--line);background:rgba(6,21,36,.84);backdrop-filter:blur(5px);border-radius:2px;padding:14px 16px}
   .capchip b{display:block;font-family:var(--disp);font-stretch:115%;font-weight:750;font-size:16.5px;color:var(--ink);margin-bottom:3px}
   .capchip span{font-size:12px;color:var(--mist);line-height:1.45;display:block}
@@ -342,7 +342,7 @@
   /* ---------- responsive ---------- */
   @media (max-width:900px){
     .topbar{padding-left:16px;padding-right:16px}
-    .caprow{grid-template-columns:repeat(2,1fr)}
+    .caprow{grid-template-columns:1fr}
     .why3{grid-template-columns:1fr}
     .asks{grid-template-columns:1fr}
     .team{grid-template-columns:repeat(2,1fr)}
