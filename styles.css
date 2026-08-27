@@ -334,7 +334,7 @@
   @media (min-width:901px){
     .q,.hud{width:min(980px,calc(100vw - 292px))}
     .panel.left{left:max(6vw,146px)}
-    .panel.centerb{width:min(920px,calc(100vw - 292px))}
+    .panel.centerb{left:calc(50% + 146px);width:min(920px,calc(100vw - 292px))}
     .panel.centerc{width:min(760px,calc(100vw - 292px))}
     .closing{padding-left:max(6vw,150px);padding-right:max(6vw,40px)}
   }
