@@ -218,22 +218,32 @@ const trayG = new T.Group();
   for (const [x,z] of [[-.68,-.88],[.68,-.88],[-.68,.88],[.68,.88]]){
     const st = cyl(.05,.05,.1, matMetal()); st.position.set(x,.1,z); trayG.add(st);
   }
-  // Jetson (orange board + heatsink)
+  // Raspberry Pi 8GB 
   const jet = new T.Group();
-  const pcb = box(.78,.05,.82, matOrange());
-  const hsB = box(.5,.05,.5, matMetal()); hsB.position.y = .06;
-  for (let i=0;i<7;i++){
-    const fin = box(.5,.1,.02, matMetal());
-    fin.position.set(0,.13,-.21+i*.07);
-    jet.add(fin);
+  const matPiBoard = M(0x1f6b3f, .5, .1);
+  const pcb = box(.78,.05,.82, matPiBoard); pcb.position.z = -.07;
+  const soc = box(.2,.05,.2, matBlack()); soc.position.set(.08,.055,-.15);
+  const gpio = box(.6,.04,.06, matBlack()); gpio.position.set(-.05,.045,-.44);
+  jet.add(pcb, soc, gpio);
+  for (let i=0;i<2;i++){
+    const usb = box(.1,.08,.1, matMetal());
+    usb.position.set(.34, .06, -.02+i*.14);
+    jet.add(usb);
   }
-  const port = box(.12,.08,.16, matMetal()); port.position.set(.34,.06,-.3);
-  jet.add(pcb, hsB, port);
-  jet.position.set(-.28,.12,-.2);
+  const eth = box(.14,.09,.16, matMetal()); eth.position.set(.32,.065,-.3);
+  jet.add(eth);
+  for (let i=0;i<2;i++){
+    const hdmi = box(.09,.04,.07, matDark());
+    hdmi.position.set(-.34, .04, -.32+i*.13);
+    jet.add(hdmi);
+  }
+  const usbc = box(.09,.035,.06, matDark()); usbc.position.set(-.34,.035,.16);
+  jet.add(usbc);
+  jet.position.set(-.18,.12,-.2);
   trayG.add(jet);
-  const jl = textPlane("JETSON · QNX", .6, .12, "#ffe3c4", null, 42);
+  const jl = textPlane("RASPBERRY PI", .45, .09, "#c4ffd8", null, 32);
   jl.rotation.x = -Math.PI/2; jl.rotation.z = Math.PI;
-  jl.position.set(-.28,.16,.32); trayG.add(jl);
+  jl.position.set(0, .027, .2); jet.add(jl);
   // Nano Every (green)
   const nano = box(.32,.05,.5, matGreen()); nano.position.set(.44,.12,-.5);
   const chip = box(.14,.04,.14, matBlack()); chip.position.set(.44,.16,-.5);
@@ -251,7 +261,7 @@ const trayG = new T.Group();
   trayG.add(bar, barc);
   // LiPo
   const lipo = box(1.1,.2,.34, matBlue()); lipo.position.set(0,.18,.68);
-  const label = textPlane("4S 14.8V 5000mAh", .8, .14, "#12305A", "#EAF4FB", 34);
+  const label = textPlane("4S 14.8V 5000mAh", .8, .14, "#12305A", "#EAF4FB", 20);
   label.rotation.x = -Math.PI/2; label.rotation.z = Math.PI;
   label.position.set(0,.29,.68);
   const xt = box(.1,.08,.1, matYellow()); xt.position.set(.58,.2,.68);
@@ -267,7 +277,7 @@ const trayG = new T.Group();
   trayG.position.set(0, -.16, -.5);
 }
 addPart("tray", trayG, [0.5,0.85], new T.Vector3(0,-.5,-.25), new T.Vector3());
-ANCH.jetson = {obj: trayG, local: new T.Vector3(-.28,.25,-.2)};
+ANCH.jetson = {obj: trayG, local: new T.Vector3(-.18,.25,-.2)};
 ANCH.imu = {obj: trayG, local: new T.Vector3(-.44,.18,.3)};
 ANCH.bar30 = {obj: trayG, local: new T.Vector3(.44,.24,.3)};
 ANCH.lipo = {obj: trayG, local: new T.Vector3(0,.3,.68)};
