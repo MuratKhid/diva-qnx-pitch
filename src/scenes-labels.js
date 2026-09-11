@@ -2,10 +2,11 @@
 /* ================= scenes / labels ================= */
 const SCN = [
  ["hero",0,0.085],["s1",0.085,0.185],["s2",0.185,0.300],["s3",0.300,0.445],
- ["s4",0.445,0.590],["s5",0.590,0.715],["s6",0.715,0.830],["s7",0.830,0.925],["hand",0.925,1.01]
+ ["s5",0.445,0.555],["cooling",0.555,0.665],["s4",0.665,0.775],
+ ["s6",0.775,0.880],["s7",0.880,0.950],["hand",0.950,1.01]
 ];
-const panelMap = {s1:"#panel-s1",s2:"#panel-s2",s7:"#panel-s7",hand:"#panel-hand"};
-const capMap = {s3:"#cap-s3",s4:"#cap-s4",s5:"#cap-s5",s6:"#cap-s6"};
+const panelMap = {s1:"#panel-s1",s2:"#panel-s2",cooling:"#panel-cooling",s7:"#panel-s7",hand:"#panel-hand"};
+const capMap = {s3:"#cap-s3",s4:"#cap-s4",s5:"#cap-s5",cooling:"#cap-cooling",s6:"#cap-s6"};
 const labels = [...document.querySelectorAll(".lbl")].map(el => ({
   el, scene: el.dataset.scene, anchor: el.dataset.anchor
 }));
@@ -67,7 +68,10 @@ function updateLeaders(){
     const capSel = capMap[activeScene];
     let capR = null;
     if (capSel){ const c = $(capSel); if (c && c.classList.contains("on")) capR = c.getBoundingClientRect(); }
-    const maxBot = h - 16;
+    // Cooling copy owns the bottom strip; anchored labels stay above it.
+    const coolingCaption=$("#panel-cooling");
+    const maxBot = activeScene === "cooling"
+      ? Math.min(h-16,coolingCaption.getBoundingClientRect().top-sr.top-12) : h-16;
     const edge = Math.round(clamp(w*0.015, 8, 26));
     for (const side of ["L","R"]){
       const col = act.filter(l => l.side === side).sort((a,b) => a.ty - b.ty);
@@ -109,9 +113,17 @@ function updateLeaders(){
       }
     }
     for (const lb of act){
+      const stackedCooling = activeScene === "cooling" && w <= 600;
+      if (stackedCooling){
+        const capBottom=capR?capR.bottom-sr.top:minTop;
+        const isRadiator=lb.anchor==="coolingRadiator";
+        const x=isRadiator?(w-lb.el.offsetWidth)/2:lb.side==="L"?8:w-lb.el.offsetWidth-8;
+        lb.el.style.left=x+"px";lb.el.style.right="auto";
+        lb.el.style.top=(capBottom+14+(isRadiator?68:0))+"px";
+      }
       const cr = lb.el.getBoundingClientRect();
-      const ax = (lb.side === "L" ? cr.right : cr.left) - sr.left;
-      const ay = cr.top + cr.height/2 - sr.top;
+      const ax = (stackedCooling ? cr.left+cr.width/2 : lb.side === "L" ? cr.right : cr.left) - sr.left;
+      const ay = (stackedCooling ? cr.bottom : cr.top + cr.height/2) - sr.top;
       for (const ln of [lb.halo, lb.line]){
         ln.setAttribute("x1",ax); ln.setAttribute("y1",ay);
         ln.setAttribute("x2",lb.tx); ln.setAttribute("y2",lb.ty);
@@ -126,9 +138,9 @@ function setScene(id){
   if (id === activeScene) return;
   activeScene = id;
   stageA.dataset.scene = id;
+  document.querySelectorAll('.lbl[data-scene="cooling"] a').forEach(a=>{a.tabIndex=id==="cooling"?0:-1;});
   for (const [sid, sel] of Object.entries(panelMap)) $(sel).classList.toggle("on", sid === id);
   for (const [sid, sel] of Object.entries(capMap)) $(sel).classList.toggle("on", sid === id);
   labels.forEach(lb => lb.el.classList.toggle("on", lb.scene === id));
   for (const [sid, g] of Object.entries(sceneGroups)) g.classList.toggle("on", sid === id);
 }
-

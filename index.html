@@ -2,7 +2,7 @@
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>
 <title>DIVA × QNX</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="styles.css?v=6a762f4">
+<link rel="stylesheet" href="styles.css?v=cooling-3d-3">
 
 <div class="bgfx" aria-hidden="true">
   <div class="grad-deep"></div>
@@ -89,8 +89,8 @@
     </aside>
 
     <div class="cap" id="cap-s3"><p class="eyebrow">Assembly</p></div>
-    <div class="cap" id="cap-s4"><p class="eyebrow">Electronics bay</p></div>
     <div class="cap" id="cap-s5"><p class="eyebrow">Buoyancy engine</p></div>
+    <div class="cap" id="cap-s4"><p class="eyebrow">Electronics bay</p></div>
     <div class="cap" id="cap-s6"><p class="eyebrow">Wings &amp; control</p></div>
 
     <!-- labels: s3 -->
@@ -100,17 +100,29 @@
     <div class="lbl slot-r1" id="lb-cams" data-scene="s3" data-anchor="cams"><div class="plate"><h4>Nose cameras ×2</h4><p>IMX219-160 pair behind the acrylic mouth window — one facing forward, one down at the reef.</p></div></div>
     <div class="lbl slot-r3" id="lb-vent" data-scene="s3" data-anchor="vent"><div class="plate"><h4>Ventral hull</h4><p>The waterproofing boundary through O-rings, gasket bead, and potted passthroughs.</p></div></div>
 
-    <!-- labels: s4 -->
-    <div class="lbl slot-l1" id="lb-jetson" data-scene="s4" data-anchor="jetson"><div class="plate"><h4>Raspberry Pi 8 GB</h4><p>Main computer — boots QNX Neutrino and hosts the vision pipeline.</p></div></div>
-    <div class="lbl slot-l2" id="lb-imu" data-scene="s4" data-anchor="imu"><div class="plate"><h4>BNO055 IMU</h4><p>Absolute orientation, streamed straight into the pitch loop.</p></div></div>
-    <div class="lbl slot-r1" id="lb-bar30" data-scene="s4" data-anchor="bar30"><div class="plate"><h4>Bar30 depth</h4><p>Pressure to 300 m at mm resolution — the glider's altimeter.</p></div></div>
-    <div class="lbl slot-r2" id="lb-lipo" data-scene="s4" data-anchor="lipo"><div class="plate"><h4>4S LiPo · 5,000 mAh</h4><p>14.8 V pack behind 5 V buck and 6 V UBEC rails.</p></div></div>
-    <div class="lbl slot-r3" id="lb-pwm" data-scene="s4" data-anchor="pwm"><div class="plate"><h4>Real-time PWM I/O</h4><p>PCA9685 / Nano Every — clean pulses out to every actuator.</p></div></div>
-
     <!-- labels: s5 -->
     <div class="lbl slot-l1" id="lb-chamber" data-scene="s5" data-anchor="chamber"><div class="plate"><h4>Ballast chamber</h4><p>Floods to sink, purges to climb — buoyancy is the propulsion.</p></div></div>
     <div class="lbl slot-r1" id="lb-stepper" data-scene="s5" data-anchor="stepper"><div class="plate"><h4>NEMA 17 + TMC2209</h4><p>Linear stepper meters water in and out, grams at a time, silently.</p></div></div>
     <div class="lbl slot-r3" id="lb-pitch" data-scene="s5" data-anchor="port"><div class="plate"><h4>Pitchline mount</h4><p>Low on the centerline: ballast position is pitch authority — and pitch is speed.</p></div></div>
+
+    <div class="cap" id="cap-cooling"><p class="eyebrow">Buoyancy &amp; cooling</p><h3>One pump. Two jobs.</h3></div>
+    <div class="lbl" id="lb-cooling-intake" data-scene="cooling" data-anchor="coolingIntake"><div class="plate"><h4>01 · Outside water</h4><p>One silicone tube extends outside DIVA, drawing water into the radiator.</p></div></div>
+    <div class="lbl" id="lb-cooling-radiator" data-scene="cooling" data-anchor="coolingRadiator"><div class="plate"><h4>Pi 5 water radiator</h4><p>Mounted on the Raspberry Pi; the coolant carries heat away.</p><a href="https://www.seeedstudio.com/ICE-Pump-Cooling-Block-for-Raspberry-Pi-5-p-5865.html" target="_blank" rel="noopener noreferrer">Seeed Studio · 114070261 ↗</a></div></div>
+    <div class="lbl" id="lb-cooling-reservoir" data-scene="cooling" data-anchor="coolingReservoir"><div class="plate"><h4>02 · Ballast reservoir</h4><p>The second silicone tube connects the radiator to the NEMA-driven reservoir.</p></div></div>
+    <aside class="panel cooling-caption" id="panel-cooling" aria-labelledby="cooling-flow-title">
+      <div class="plate">
+        <p class="eyebrow" id="cooling-flow-title">Fill · dive</p>
+        <p>We’ll pass ballast water through the Pi 5 radiator via two silicone tubes. The NEMA piston draws water in, then pushes it back out—cooling the Pi during both strokes.</p>
+        <span id="cooling-flow-note">Outside water → radiator → reservoir</span>
+      </div>
+    </aside>
+
+    <!-- labels: s4 -->
+    <div class="lbl slot-l1" id="lb-jetson" data-scene="s4" data-anchor="jetson"><div class="plate"><h4>Raspberry Pi 5 · 8 GB</h4><p>Main computer — boots QNX Neutrino and hosts the vision pipeline. Water-cooled by the shared ballast circuit.</p></div></div>
+    <div class="lbl slot-l2" id="lb-imu" data-scene="s4" data-anchor="imu"><div class="plate"><h4>BNO055 IMU</h4><p>Absolute orientation, streamed straight into the pitch loop.</p></div></div>
+    <div class="lbl slot-r1" id="lb-bar30" data-scene="s4" data-anchor="bar30"><div class="plate"><h4>Bar30 depth</h4><p>Pressure to 300 m at mm resolution — the glider's altimeter.</p></div></div>
+    <div class="lbl slot-r2" id="lb-lipo" data-scene="s4" data-anchor="lipo"><div class="plate"><h4>4S LiPo · 5,000 mAh</h4><p>14.8 V pack behind 5 V buck and 6 V UBEC rails.</p></div></div>
+    <div class="lbl slot-r3" id="lb-pwm" data-scene="s4" data-anchor="pwm"><div class="plate"><h4>Real-time PWM I/O</h4><p>PCA9685 / Nano Every — clean pulses out to every actuator.</p></div></div>
 
     <!-- labels: s6 -->
     <div class="lbl slot-l1" id="lb-servo" data-scene="s6" data-anchor="servoL1"><div class="plate"><h4>LW-25MG servos ×6</h4><p>One waterproof servo per rod, hard-mounted to the chassis.</p></div></div>
@@ -306,12 +318,13 @@
 <script src="src/scene-setup.js"></script>
 <script src="src/materials.js"></script>
 <script src="src/shapes.js"></script>
-<script src="src/robot.js"></script>
+<script src="src/robot.js?v=cooling-3d-3"></script>
+<script src="src/cooling.js?v=cooling-3d-4"></script>
 <script src="src/seabed.js"></script>
-<script src="src/keyframes.js"></script>
-<script src="src/scenes-labels.js"></script>
+<script src="src/keyframes.js?v=cooling-3d-3"></script>
+<script src="src/scenes-labels.js?v=cooling-3d-3"></script>
 <script src="src/qnx-hud.js"></script>
 <script src="src/particles.js"></script>
-<script src="src/main.js"></script>
+<script src="src/main.js?v=cooling-3d-3"></script>
 
 </body></html>

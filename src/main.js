@@ -17,11 +17,12 @@ const MARKS = [
   {name:"PROBLEM",     track:"A", t:.135},
   {name:"BIOMECHANICS",       track:"A", t:.24},
   {name:"ASSEMBLY",    track:"A", t:.36},
-  {name:"ELECTRONICS", track:"A", t:.52},
-  {name:"BALLAST",     track:"A", t:.65},
-  {name:"WINGS",       track:"A", t:.775},
-  {name:"REASSEMBLY",  track:"A", t:.875},
-  {name:"HANDOFF",        track:"A", t:.965},
+  {name:"BUOYANCY",    track:"A", t:.51},
+  {name:"COOLING",     track:"A", t:.61},
+  {name:"ELECTRONICS", track:"A", t:.72},
+  {name:"WINGS",       track:"A", t:.83},
+  {name:"REASSEMBLY",  track:"A", t:.915},
+  {name:"HANDOFF",        track:"A", t:.98},
   {name:"INVISIBLE HALF", track:"B", t:.06},
   {name:"ARCHITECTURE",   track:"B", t:.27},
   {name:"DETERMINISM",    track:"B", t:.51},
@@ -129,6 +130,8 @@ const diveBtn = $("#diveBtn");
 // extra-slow entry dive so the plunge, splash and level-off all read clearly
 if (diveBtn) diveBtn.addEventListener("click", () => seekToY(markTargetY(MARKS[1]), .55));
 
+
+
 let smA = 0, smB = 0, smC = 0, lastNow = 0, flapAmp = 0;
 let azLast = 0, azVel = 0, lastBob = 0;
 let gPitch = 0, gY = 0, glideBB = null;
@@ -148,6 +151,7 @@ function seabedFrame(now, sc){
         const base = m.userData.baseOpacity !== undefined ? m.userData.baseOpacity : (m.userData.baseOpacity = m.opacity);
         m.opacity = base;
         m.visible = base > 0.015;
+        if (m.userData.baseDepthWrite !== undefined) m.depthWrite = m.userData.baseDepthWrite;
       }
     }
   }
@@ -191,6 +195,8 @@ function seabedFrame(now, sc){
   const az = (-.14 + sc*.3) + (reduced ? 0 : Math.sin(now*.00007)*.05);
   camC.position.set(Math.sin(az)*Math.cos(el)*dist, 2.2 + Math.sin(el)*dist, Math.cos(az)*Math.cos(el)*dist);
   camC.lookAt(0, 1.8, 0);
+  robot.updateMatrixWorld();
+  updateCooling(0,0,.25,0);
   robot.updateMatrixWorld();
   renderer2.render(seaScene, camC);
 }
@@ -274,7 +280,8 @@ function update(now, kOverride){
     const az = (180 + P.az) * Math.PI/180;
     const el = P.el * Math.PI/180;
     const tgt = _v.set(P.tx, P.ty, P.tz);
-    const dist = P.dist * clamp(.78 / camera.aspect, 1, 1.45);
+    const dist = P.dist * clamp(.78 / camera.aspect, 1, 1.45)
+      * lerp(1,clamp(.95 / camera.aspect,1,2.4),P.cool);
     camera.position.set(
       tgt.x + dist * Math.cos(el) * Math.sin(az),
       tgt.y + dist * Math.sin(el),
@@ -349,6 +356,9 @@ function update(now, kOverride){
           (m.userData.baseOpacity = m.opacity);
         m.opacity = base * alpha;
         m.visible = m.opacity > 0.015;
+        // Ghosted hull layers must not cut holes into the connected clear hoses.
+        if (m.userData.baseDepthWrite === undefined) m.userData.baseDepthWrite = m.depthWrite;
+        m.depthWrite = m.userData.baseDepthWrite && alpha > .98;
       }
     }
 
@@ -384,7 +394,7 @@ function update(now, kOverride){
     }
     // flapping: each servo rotates its rod; the silicone bends with them.
     // roots stay pinned, tips travel; phase lag front-to-rear = the manta's wave.
-    const inS6 = smA > 0.705 && smA < 0.845;
+    const inS6 = smA > 0.765 && smA < 0.890;
     const ampT = reduced ? 0 : (inS6 ? .15 : .12*clamp(1 - P.e/0.3, 0, 1));
     flapAmp += (ampT - flapAmp)*.06;
     const om = now*0.0021;
@@ -404,14 +414,26 @@ function update(now, kOverride){
       }
     }
 
-    // ballast plunge in s5
-    if (smA > 0.55 && smA < 0.76){
-      const lt = clamp((smA - 0.59)/(0.715 - 0.59), 0, 1);
-      const plun = reduced ? 0.5 : (Math.sin(lt*Math.PI*2 - Math.PI/2)+1)/2;   // 0..1..0
+    // Cooling shares the real electronics tray and ballast, with a small
+    // exploded gap above the Pi to make the copper contact / heat path visible.
+    trayG.position.x -= P.cool*.70;
+    coolerG.position.x -= P.cool*.70;
+    coolerG.position.y += P.cool*.50;
+    balG.position.x += P.cool*.95;
+    robot.updateMatrixWorld();
+    const coolingProgress = reduced ? .25 : clamp((smA-.578)/(.655-.578),0,1);
+    const coolingStroke = updateCooling(P.e,P.cool,coolingProgress,P.cool*P.op);
+
+    // The cooling flow, water volume, and piston use the same scroll-driven stroke.
+    if (smA > 0.445 && smA < 0.665){
+      const lt = clamp((smA - 0.445)/(0.555 - 0.445), 0, 1);
+      const plun = reduced ? 0.5 : smA >= .555 ? coolingStroke : (1-Math.cos(lt*Math.PI*2))/2;
       const zPiston = 0.18 + (1-plun)*0.62;       // 0.18 (full) .. 0.80 (empty)
       const wLen = Math.max(0.02, 0.92 - zPiston);
       const w = balG.userData.water, pi = balG.userData.piston;
       pi.position.set(0,.05, zPiston);
+      balG.userData.shaft.scale.y = (zPiston + .23)/.5;
+      balG.userData.shaft.position.z = (zPiston - .23)/2;
       w.scale.y = wLen;
       w.position.set(0,.05, zPiston + wLen/2 + .01);
     }

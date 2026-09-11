@@ -296,6 +296,7 @@ const balG = new T.Group();
   lbl.position.set(0,.32,-.5); lbl.rotation.x = -Math.PI/2; lbl.rotation.z = Math.PI;
   const shaft = cyl(.028,.028,.5, matMetal()); shaft.rotation.x = Math.PI/2;
   shaft.position.set(0,.05,.02);
+  balG.userData.shaft = shaft;
   // syringe
   const tube = new T.Mesh(new T.CylinderGeometry(.21,.21,.84,24,1,true), matGlassG());
   tube.rotation.x = Math.PI/2; tube.position.set(0,.05,.54);
@@ -352,4 +353,3 @@ const ventralG = new T.Group();
 }
 addPart("ventral", ventralG, [0.42,0.85], new T.Vector3(0,-2.5,0), new T.Vector3(0,0,-.05));
 ANCH.vent = {obj: ventralG, local: new T.Vector3(0,-.3,.4)};
-
