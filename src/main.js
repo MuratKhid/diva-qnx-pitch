@@ -249,9 +249,9 @@ function update(now, kOverride){
     seaNear = seaTrack ? seaTrack.getBoundingClientRect().top < innerHeight + 40 : false;
     total = clamp(scrollY / (doc.scrollHeight - innerHeight), 0, 1);
   }
-  const k = kOverride !== undefined ? kOverride : ((reduced || FAKE !== null) ? 1 : 0.11);
+  const k = kOverride !== undefined ? kOverride : ((reduced || FAKE !== null) ? 1 : 1-Math.exp(-7*dt));
   smA += (tA - smA)*k; smB += (tB - smB)*k; smC += (tC - smC)*k;
-  if (Math.abs(tA-smA) < 0.0004) smA = tA;
+  if (Math.abs(tA-smA) < (smA<.155?.00001:.0004)) smA = tA;
   if (Math.abs(tB-smB) < 0.0004) smB = tB;
   if (Math.abs(tC-smC) < 0.0004) smC = tC;
 
@@ -259,7 +259,8 @@ function update(now, kOverride){
   drMarker.style.top = (total*100).toFixed(2) + "%";
   updateGaugeActive(total);
   root.style.setProperty("--surf", (1 - clamp(total*2.6, 0, 0.96)).toFixed(3));
-  root.style.setProperty("--sky", (1 - sstep(smA/.05)).toFixed(3));
+  root.style.setProperty("--sky", (1 - sstep((smA-.042)/.030)).toFixed(3));
+  root.style.setProperty("--entry-copy", (1-sstep((smA-.012)/.030)).toFixed(3));
 
   /* ---- robot ---- */
   const seaOn = seaOK && (seaNear || tC > 0 || smC > 0.001);
@@ -275,13 +276,20 @@ function update(now, kOverride){
     }
     sizeRenderer();
     const P = paramsAt(smA);
+    const entry=entryPose(smA,FAKE!==null?undefined:entryTime(smA,now));
+    root.style.setProperty("--sky",(1-sstep((entry.time-1.55)/.35)).toFixed(3));
+    const coastWeight=1-sstep((smA-.17)/.13);
+    const coastZ=entry.z*coastWeight;
+    const followZ=coastZ*lerp(.35,1,sstep((smA-.09)/.07));
 
     // camera orbit (the camera moves; the robot only idles in place)
     const az = (180 + P.az) * Math.PI/180;
     const el = P.el * Math.PI/180;
-    const tgt = _v.set(P.tx, P.ty, P.tz);
+    const tgt = _v.set(P.tx, P.ty, P.tz+followZ);
+    const entryFraming=sstep((smA-.008)/.024)*(1-sstep((smA-.070)/.055));
     const dist = P.dist * clamp(.78 / camera.aspect, 1, 1.45)
-      * lerp(1,clamp(.95 / camera.aspect,1,2.4),P.cool);
+      * lerp(1,clamp(.95 / camera.aspect,1,2.4),P.cool)
+      * lerp(1,clamp(.72 / camera.aspect,1,1.8),entryFraming);
     camera.position.set(
       tgt.x + dist * Math.cos(el) * Math.sin(az),
       tgt.y + dist * Math.sin(el),
@@ -307,18 +315,15 @@ function update(now, kOverride){
     const gk = FAKE !== null ? 1 : .08;
     gPitch += (gPitchT - gPitch)*gk;
     gY += (gYT - gY)*gk;
-    // surface start: DIVA waits out of frame above the water; once the dive begins
-    // it plunges nose-first through the surface, then slowly levels off into 01
-    const dropY = 1 - sstep((smA - .004)/.07);      // altitude: falling until ~smA .075
-    const dropLvl = 1 - sstep((smA - .055)/.065);   // attitude: levels off later, into 01
-    if (!reduced){
-      if (!splashed && smA > .042 && smA < .3){ spawnSplash(); splashed = true; }
-      else if (smA < .006) splashed = false;
-    }
-    robot.position.y = Math.sin(now*0.0009)*0.12*idle*(1 - gw*.8) + gY + dropY*9.5;
-    robot.rotation.x = gPitch - dropLvl*.55;
+    // Ballistic fall joins a velocity-continuous, drag-limited immersion.
+    // The water, hull contact and spray share the same scroll-based clock.
+    const settled=sstep((entry.time-2.6)/1.25);
+    robot.position.z=coastZ;
+    robot.position.y = Math.sin(now*0.0009)*0.12*idle*(1 - gw*.8)*settled + gY + entry.y;
+    robot.rotation.x = gPitch + entry.pitch*coastWeight;
+    updateOceanEntry(smA,now,entry.time);
     // plunge bubbles streaming up around the hull and wings
-    const bw = reduced ? 0 : sstep((smA - .048)/.025) * (1 - sstep((smA - .125)/.04));
+    const bw = reduced ? 0 : sstep((entry.time-1.35)/.65)*(1-sstep((entry.time-3.1)/1.6));
     if (bw > 0.001){
       if (!bubActive){ for (let i = 0; i < BUBN; i++) seedBubble(i, robot.position.y); bubActive = true; }
       for (let i = 0; i < BUBN; i++){
@@ -328,10 +333,11 @@ function update(now, kOverride){
       }
       bubGeo.attributes.position.needsUpdate = true;
       bubTrail.visible = true;
+      bubTrail.position.z=coastZ*.6;
       bubMat.opacity = .7*bw;
     } else if (bubTrail.visible){ bubTrail.visible = false; bubActive = false; }
-    robot.rotation.y = Math.sin(now*0.00023)*0.09*idle*(1 - gw*.75);
-    robot.rotation.z = Math.sin(now*0.0007)*0.02*idle;
+    robot.rotation.y = Math.sin(now*0.00023)*0.09*idle*(1 - gw*.75)*settled;
+    robot.rotation.z = Math.sin(now*0.0007)*0.02*idle*settled+entry.roll*coastWeight;
 
 
     // staged explode
@@ -355,6 +361,9 @@ function update(now, kOverride){
         const base = m.userData.baseOpacity !== undefined ? m.userData.baseOpacity :
           (m.userData.baseOpacity = m.opacity);
         m.opacity = base * alpha;
+        // Solid hull panels belong in the opaque render pass. Otherwise the
+        // transparent sea and opaque-looking shell can sort through each other.
+        if(!m.map)m.transparent = m.opacity < .995;
         m.visible = m.opacity > 0.015;
         // Ghosted hull layers must not cut holes into the connected clear hoses.
         if (m.userData.baseDepthWrite === undefined) m.userData.baseDepthWrite = m.depthWrite;
@@ -469,7 +478,7 @@ function update(now, kOverride){
     }
   }
 
-  if (!reduced) drawSnow(now);
+  if (!reduced) drawSnow(now,sstep((smA-.055)/.035));
 }
 function frame(now){ update(now); requestAnimationFrame(frame); }
 requestAnimationFrame(frame);

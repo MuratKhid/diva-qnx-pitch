@@ -6,7 +6,8 @@ const AB = Object.assign({},A1,{dorsal:.04,hatch:.04,finL:.03,finR:.03,frame:.07
 const AC = Object.assign({},A1,{dorsal:.025,hatch:.025,finL:.015,finR:.015,frame:.025,tray:1,ballast:1,ventral:.025});
 const AW = Object.assign({},A1,{dorsal:.08,hatch:.08,finL:.9,finR:.9,frame:1,tray:.08,ballast:.08,ventral:.07,cooler:.08});
 const KF = [
- {p:0.000, az:-26, el:14, dist:9.8,  tx:0,    ty:1.6,  tz:0,    e:0,   op:1,   al:A1},
+ {p:0.000, az:-26, el:2, dist:12.0,  tx:0,    ty:3.6,  tz:0,    e:0,   op:1,   al:A1},
+ {p:0.045, az:-8, el:8, dist:11.5,  tx:0,    ty:2.3,  tz:0,    e:0,   op:1,   al:A1},
  {p:0.085, az:26,  el:12, dist:10.0, tx:-1.35,ty:.15,  tz:0,    e:0,   op:1,   al:A1},
  {p:0.185, az:-28, el:24, dist:10.2, tx:1.35, ty:.1,   tz:0,    e:0,   op:1,   al:A1},
  {p:0.300, az:18,  el:34, dist:9.8,  tx:0,    ty:.1,   tz:0,    e:.1,  op:1,   al:A1},

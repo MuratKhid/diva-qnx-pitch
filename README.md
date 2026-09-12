@@ -13,6 +13,18 @@ reservoir, moves the piston, and reverses the 3D flow markers through the same t
 The second half shows how QNX Neutrino's deterministic scheduling and
 microkernel fault isolation are essential to the control stack.
 
+The opening uses a displaced 3D sea surface with directional gravity waves,
+view-dependent reflections, and impact ripples. DIVA's scroll-scrubbed free fall
+transitions continuously into drag-limited immersion; staggered hull contact
+launches gravity-driven 3D spray and a collapsing water sheet. This is a
+lightweight physics-based visual approximation, not validated CFD. Ambient
+waves keep moving independently, and reduced-motion mode disables spray.
+Impact spray is biased toward the wing slaps and bow, with broken foam patches
+and a temporary surface cavity. After contact, a short independent animation
+clock lets the splash collapse and the glider coast forward even when scrolling
+pauses. Damped pitch/roll settle into the existing swim; reverse scrolling resets
+the entry. Opaque hull panels and depth-writing water prevent ghosted overlap.
+
 ## Codebase
 
 Includes vanilla JS and Three.js (inlined, r147). No build step, no external
@@ -27,6 +39,7 @@ dependencies. Works as a static page (GitHub Pages ready).
 | `prev.index.html` | full byte-identical backup of the original monolith, before any changes |
 | `src/utils.js` | `$`, `clamp`, `lerp`, `ease`, `sstep`, `reduced`, `FAKE` |
 | `src/scene-setup.js` | THREE renderer/scene/camera/lights |
+| `src/ocean-entry.js` | Dynamic 3D sea, water-entry trajectory, splash sheet, spray and ripples |
 | `src/materials.js` | material factory |
 | `src/shapes.js` | geometry helpers |
 | `src/robot.js` | robot model build (biggest, 344 lines) |
@@ -39,3 +52,5 @@ dependencies. Works as a static page (GitHub Pages ready).
 | `src/main.js` | scroll/depth-gauge/rAF loop, orchestrates rest |
 
 Tip: append `#p=0.5` to the URL to deep-link to any scroll position.
+
+Run the entry geometry/physics regression checks with `node tests/ocean-entry.cjs`.

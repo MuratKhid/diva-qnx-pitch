@@ -159,11 +159,19 @@ function seedBubble(i, yBase){
   bubPh[i] = Math.random()*6.3;
 }
 const bubMat = new T.PointsMaterial({color:0xd6f2fc, size:.12, transparent:true, opacity:0, depthWrite:false});
+bubMat.onBeforeCompile=shader=>{
+  shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`
+    #include <color_fragment>
+    float bubbleRadius=length(gl_PointCoord-.5)*2.;
+    if(bubbleRadius>.98)discard;
+    float rim=smoothstep(.48,.78,bubbleRadius)*(1.-smoothstep(.78,.98,bubbleRadius));
+    diffuseColor.a*=.10+rim*.80;
+  `);
+};
 const bubTrail = new T.Points(bubGeo, bubMat);
 bubTrail.visible = false;
 bubTrail.frustumCulled = false;
 scene.add(bubTrail);
 let bubActive = false;
-
 
 

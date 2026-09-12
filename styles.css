@@ -5,7 +5,7 @@
     --amber:#FFB454; --amber-dim:#8A5F26; --amber-glow:rgba(255,180,84,.30);
     --line:rgba(140,190,220,.18); --line2:rgba(140,190,220,.32);
     --danger:#FF6B5E;
-    --surf:1; --sky:1;
+    --surf:1; --sky:1; --entry-copy:1;
     --disp:"Archivo",system-ui,sans-serif;
     --body:"IBM Plex Sans",system-ui,sans-serif;
     --mono:"IBM Plex Mono",ui-monospace,monospace;
@@ -30,10 +30,8 @@
     -webkit-mask-image:linear-gradient(180deg,rgba(0,0,0,.95) 30%,transparent 96%);
     mask-image:linear-gradient(180deg,rgba(0,0,0,.95) 30%,transparent 96%)}
   /* above the surface: sky visible only at the very start of the dive */
-  .skyband{position:absolute;top:0;left:0;right:0;height:56vh;opacity:var(--sky);pointer-events:none;
-    background:linear-gradient(180deg,#5E97B8 0%,#7FB0CC 52%,#A6CEE2 90%,#DDF0F8 100%)}
-  .skyband::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:3px;
-    background:rgba(238,252,255,.9);filter:blur(1px);box-shadow:0 3px 18px rgba(214,242,252,.75)}
+  .skyband{position:absolute;inset:0;opacity:var(--sky);pointer-events:none;
+    background:linear-gradient(180deg,#487790 0%,#78A6BC 40%,#BBD6E1 74%,#DDF0F8 100%)}
   .rays{position:absolute;inset:0;opacity:calc(.25 + var(--surf)*.75)}
   .rays i{position:absolute;top:-12%;height:100vh;background:linear-gradient(180deg,rgba(190,235,252,.17),rgba(190,235,252,.04) 55%,transparent 80%);
     filter:blur(7px);transform-origin:top center}
@@ -144,7 +142,7 @@
     padding-top:11vh;pointer-events:none;
     opacity:0;transition:opacity .5s ease;
   }
-  .stage[data-scene="hero"] .hero{opacity:1}
+  .stage[data-scene="hero"] .hero{opacity:var(--entry-copy)}
   .eyebrow{font-family:var(--mono);font-size:clamp(10px,1.3vw,12.5px);letter-spacing:.34em;text-transform:uppercase;color:var(--mist)}
   .hero h1{
     font-family:var(--disp);font-stretch:125%;font-weight:870;
