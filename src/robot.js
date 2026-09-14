@@ -215,8 +215,10 @@ const trayG = new T.Group();
   const tray = box(1.5,.14,1.9, matPink());
   const cavity = box(1.34,.06,1.74, M(0x5c2138,.6,0)); cavity.position.y = .06;
   trayG.add(tray, cavity);
+  trayG.userData.coolingMembers=new Set([tray,cavity]);
   for (const [x,z] of [[-.68,-.88],[.68,-.88],[-.68,.88],[.68,.88]]){
     const st = cyl(.05,.05,.1, matMetal()); st.position.set(x,.1,z); trayG.add(st);
+    trayG.userData.coolingMembers.add(st);
   }
   // Raspberry Pi 8GB 
   const jet = new T.Group();
@@ -241,6 +243,7 @@ const trayG = new T.Group();
   jet.add(usbc);
   jet.position.set(-.18,.12,-.2);
   trayG.add(jet);
+  trayG.userData.coolingMembers.add(jet);
   const jl = textPlane("RASPBERRY PI", .45, .09, "#c4ffd8", null, 32);
   jl.rotation.x = -Math.PI/2; jl.rotation.z = Math.PI;
   jl.position.set(0, .027, .2); jet.add(jl);

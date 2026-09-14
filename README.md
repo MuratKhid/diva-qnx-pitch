@@ -44,6 +44,7 @@ dependencies. Works as a static page (GitHub Pages ready).
 | `src/shapes.js` | geometry helpers |
 | `src/robot.js` | robot model build (biggest, 344 lines) |
 | `src/cooling.js` | 3D Pi cooler, attached silicone plumbing, and scroll-driven coolant flow |
+| `src/component-focus.js` | Strict chapter visibility for buoyancy, cooling, electronics and wings |
 | `src/seabed.js` | Q&A boulders scene |
 | `src/keyframes.js` | camera/explode/focus keyframes |
 | `src/scenes-labels.js` | scene defs + label system |
@@ -54,3 +55,12 @@ dependencies. Works as a static page (GitHub Pages ready).
 Tip: append `#p=0.5` to the URL to deep-link to any scroll position.
 
 Run the entry geometry/physics regression checks with `node tests/ocean-entry.cjs`.
+Run system-isolation checks with `node tests/component-focus.cjs`.
+System changes crossfade over 4% of the robot scroll track, beginning just before
+each chapter boundary. Unrelated parts fade completely out by the focused view;
+the same transition restores them when scrolling backward or into reassembly.
+Reassembly closes over 6.5% of the robot track with quintic easing, holding a
+60%-opacity view through the start of handoff so the internals remain visible.
+The closing transition precedes the reassembly summary; its navigation marker
+lands on a fully assembled DIVA, held throughout the summary section.
+Run its timing/opacity regression checks with `node tests/reassembly.cjs`.

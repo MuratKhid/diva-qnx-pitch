@@ -22,18 +22,27 @@ const KF = [
  {p:0.775, az:354, el:44, dist:4.8,  tx:0,    ty:-.62, tz:-.75, e:1,   op:1,   al:AE},
  {p:0.810, az:322, el:42, dist:10.8,  tx:0,    ty:.8,   tz:0,    e:.8,  op:1,   al:AW},
  {p:0.880, az:374, el:36, dist:10.4,  tx:0,    ty:.8,   tz:0,    e:.8,  op:1,   al:AW},
- {p:0.915, az:352, el:17, dist:9.8,  tx:0,    ty:-.55, tz:0,    e:0,   op:1,   al:A1},
- {p:0.950, az:338, el:19, dist:9.8,  tx:0,    ty:-.5,  tz:0,    e:0,   op:1,   al:A1},
+ // Give the returning systems almost twice the scroll distance to close.
+ // Keep the same translucent material treatment as the handoff fade.
+ {p:0.945, az:340, el:19, dist:9.8,  tx:0,    ty:-.5,  tz:0,    e:0,   op:.6, al:A1},
+ {p:0.975, az:338, el:19, dist:9.8,  tx:0,    ty:-.5,  tz:0,    e:0,   op:.6, al:A1},
  {p:1.000, az:330, el:10, dist:16.0, tx:0,    ty:.2,   tz:0,    e:0,   op:.22, al:A1},
 ];
 function paramsAt(p){
   let i = 0;
   while (i < KF.length-2 && p > KF[i+1].p) i++;
   const a = KF[i], b = KF[i+1];
-  const t = ease(clamp((p - a.p) / (b.p - a.p), 0, 1));
+  const u = clamp((p - a.p) / (b.p - a.p), 0, 1);
+  // Quintic easing brings both velocity and acceleration to rest at either
+  // end of reassembly, without an extra camera stop halfway through it.
+  const reassembling = a.p === .880;
+  const t = reassembling ? u*u*u*(u*(u*6-15)+10) : ease(u);
   const out = {al:{}};
   for (const k of ["az","el","dist","tx","ty","tz","e","op"]) out[k] = lerp(a[k], b[k], t);
   for (const k in A1) out.al[k] = lerp(a.al[k], b.al[k], t);
   out.cool=lerp(a.cool||0,b.cool||0,t);
+  // Establish the ghosted view while systems return, then hold it as the
+  // shell closes so the internal parts remain visible inside the hull.
+  if(reassembling)out.op=lerp(1,.6,sstep((p-.880)/.028));
   return out;
 }

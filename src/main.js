@@ -21,8 +21,8 @@ const MARKS = [
   {name:"COOLING",     track:"A", t:.61},
   {name:"ELECTRONICS", track:"A", t:.72},
   {name:"WINGS",       track:"A", t:.83},
-  {name:"REASSEMBLY",  track:"A", t:.915},
-  {name:"HANDOFF",        track:"A", t:.98},
+  {name:"REASSEMBLY",  track:"A", t:.960},
+  {name:"HANDOFF",        track:"A", t:.985},
   {name:"INVISIBLE HALF", track:"B", t:.06},
   {name:"ARCHITECTURE",   track:"B", t:.27},
   {name:"DETERMINISM",    track:"B", t:.51},
@@ -138,6 +138,7 @@ let gPitch = 0, gY = 0, glideBB = null;
 
 /* ---- sea bottom frame: DIVA orbits the Q&A boulders, beacon flashing ---- */
 function seabedFrame(now, sc){
+  applyComponentFocus(null);
   if (robot.parent !== seaScene){
     seaScene.add(robot);
     robot.scale.setScalar(.62);
@@ -276,6 +277,7 @@ function update(now, kOverride){
     }
     sizeRenderer();
     const P = paramsAt(smA);
+    const componentFocus=componentFocusAt(smA);
     const entry=entryPose(smA,FAKE!==null?undefined:entryTime(smA,now));
     root.style.setProperty("--sky",(1-sstep((entry.time-1.55)/.35)).toFixed(3));
     const coastWeight=1-sstep((smA-.17)/.13);
@@ -355,7 +357,7 @@ function update(now, kOverride){
         pt.base.r.z + pt.exp.r.z*t
       );
       // alpha: focus dim × global op; screws also fade out once removed
-      let alpha = (P.al[key] !== undefined ? P.al[key] : 1) * P.op;
+      let alpha = componentFocus.parts[key] * P.op;
       if (pt.spinFade) alpha *= (1 - sstep((t - .75)/.25));
       for (const m of pt.mats){
         const base = m.userData.baseOpacity !== undefined ? m.userData.baseOpacity :
@@ -432,6 +434,9 @@ function update(now, kOverride){
     robot.updateMatrixWorld();
     const coolingProgress = reduced ? .25 : clamp((smA-.578)/(.655-.578),0,1);
     const coolingStroke = updateCooling(P.e,P.cool,coolingProgress,P.cool*P.op);
+    // Apply after cooling updates so its separate hoses and flow effects cannot
+    // switch themselves back on during a neighboring system's demonstration.
+    applyComponentFocus(componentFocus,P.op);
 
     // The cooling flow, water volume, and piston use the same scroll-driven stroke.
     if (smA > 0.445 && smA < 0.665){
