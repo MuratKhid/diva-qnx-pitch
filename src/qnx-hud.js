@@ -1,13 +1,13 @@
 "use strict";
 /* ================= QNX HUD ================= */
 const stageB = $("#stageB"), hud = $("#hud");
-const QSCN = [["q0",0,0.15],["q1",0.15,0.40],["q2",0.40,0.63],["q3",0.63,0.86],["q4",0.86,1.01]];
+const QSCN = [["q0",0,0.34],["q1",0.34,0.67],["q2",0.67,1.01]];
 let activeQ = "";   // empty so the first entry into the QNX half activates q0 properly
 function setQScene(id){
   if (id === activeQ) return;
   activeQ = id;
   stageB.dataset.scene = id;
-  ["q0","q1","q2","q3","q4"].forEach(q => $("#"+q).classList.toggle("on", q === id));
+  ["q0","q1","q2"].forEach(q => $("#"+q).classList.toggle("on", q === id));
 }
 const sch = $("#sch");
 const SEG = [];

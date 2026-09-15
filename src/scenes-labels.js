@@ -5,7 +5,7 @@ const SCN = [
  ["s5",0.445,0.555],["cooling",0.555,0.665],["s4",0.665,0.775],
  // Close the hardware in an uncluttered transition before showing the
  // reassembly summary. Every frame of s7 is the fully assembled robot.
- ["s6",0.775,0.880],["rejoin",0.880,0.945],["s7",0.945,0.975],["hand",0.975,1.01]
+ ["s6",0.775,0.880],["rejoin",0.880,0.945],["s7",0.945,0.99],["hand",0.99,1.01]
 ];
 const panelMap = {s1:"#panel-s1",s2:"#panel-s2",cooling:"#panel-cooling",s7:"#panel-s7",hand:"#panel-hand"};
 const capMap = {s3:"#cap-s3",s4:"#cap-s4",s5:"#cap-s5",cooling:"#cap-cooling",s6:"#cap-s6"};
