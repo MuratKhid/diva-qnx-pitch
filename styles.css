@@ -94,8 +94,8 @@
   /* ---------- tracks & stages ---------- */
   main{position:relative;z-index:1}
   .track{position:relative}
-  #robotTrack{height:1300vh}
-  #qnxTrack{height:620vh}
+  #robotTrack{height:1500vh}
+  #qnxTrack{height:450vh}
   #seaTrack{height:420vh}
   #seabed3d{position:absolute;inset:0;width:100%;height:100%;display:block}
   .cap.seacap{opacity:1;transform:translate(-50%,0)}

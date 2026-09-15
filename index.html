@@ -19,7 +19,7 @@
   <div class="wordmark"><span class="hD">D</span><span class="hI">I</span><span class="hV">V</span><span class="hA">A</span></div>
   <div class="tb-right">
     <span class="chip">Yale MENG 4137L · Group 1</span>
-    <span class="chip chip-amber">A sponsorship pitch for QNX</span>
+    <span class="chip chip-amber">Sponsored by QNX</span>
   </div>
 </header>
 
@@ -140,7 +140,7 @@
 
     <aside class="panel centerc handoff" id="panel-hand">
       <p class="eyebrow" style="color:var(--mist)">Part two</p>
-      <h2>With the hardware covered, here's how QNX comes into play -<br><span class="a2"> the control stack.</span></h2>
+      <h2>SOFTWARE -<br><span class="a2"> QNX NEUTRINO</span></h2>
     </aside>
   </div>
 </section>
@@ -157,7 +157,7 @@
 
 
       <div class="q" id="q0">
-        <h2 class="q-title">QNX use nº 1 · Architecture</h2>
+        <h2 class="q-title">Architecture</h2>
         <p class="lede">Resource managers wrap the IMU, depth sensor and camera as clean POSIX devices. Message passing feeds a priority-scheduled control core; actuators get their commands on schedule. Vision hangs off the side — important, never critical.</p>
         <div class="diagram">
           <svg id="pipe" viewBox="0 0 900 268" data-step="0" aria-label="DIVA control architecture on QNX">
@@ -208,7 +208,7 @@
       </div>
 
       <div class="q" id="q1">
-        <h2 class="q-title">QNX use nº 2 · Determinism</h2>
+        <h2 class="q-title">Determinism</h2>
         <p class="lede">ΔX/ΔZ = cot θ — jitter in the pitch loop literally shortens the glide. QNX's priority scheduler holds the 100 Hz cadence no matter what inference is doing. On a general-purpose kernel, the same loop drifts.</p>
         <div class="diagram">
           <svg id="sch" viewBox="0 0 900 296" aria-label="Scheduling timeline: QNX fixed cadence versus general-purpose OS jitter"></svg>
@@ -216,7 +216,7 @@
       </div>
 
       <div class="q" id="q2">
-        <h2 class="q-title">QNX use nº 3 · Fault isolation</h2>
+        <h2 class="q-title">Fault isolation</h2>
         <p class="lede">Under a microkernel, the vision pipeline is just a process in its own address space. It can die mid-dive; the process manager restarts it; the flight loop never misses a tick. On a monolithic stack, that same fault is a drowned robot.</p>
         <div class="diagram">
           <svg id="iso" viewBox="0 0 900 300" data-phase="normal" aria-label="Microkernel fault isolation demo">
@@ -268,7 +268,7 @@
 <!-- ==================== CLOSING ==================== -->
 <section class="closing">
   <div class="inner">
-    <p class="kicker">The ask</p>
+    <p class="kicker">Timeline</p>
     <h2>Sponsor the glider that makes<br>real-time software visible.</h2>
     <div class="asks">
       <div class="ask"><span class="num">RETURN 01</span><h4>A flagship demonstrator</h4><p>A photogenic, biomimetic robot whose stability story is literally "QNX holds the loop" — built, filmed and demoed through Spring 2027.</p></div>
@@ -298,7 +298,7 @@
 
     <footer>
       <span>DIVA — Deepwater Investigation &amp; Visual Analysis</span>
-      <span>Group 1 · Yale MENG 4137L · 2026–27 · prepared for QNX</span>
+      <span>Group 1 · Yale MENG 4137L · 2026–27</span>
       <span>figures from the project proposal</span>
     </footer>
   </div>
@@ -328,6 +328,6 @@
 <script src="src/scenes-labels.js?v=reassembly-2"></script>
 <script src="src/qnx-hud.js?v=q-renumber-1"></script>
 <script src="src/particles.js?v=ocean-entry-1"></script>
-<script src="src/main.js?v=reassembly-2"></script>
+<script src="src/main.js?v=reassembly-3"></script>
 
 </body></html>
