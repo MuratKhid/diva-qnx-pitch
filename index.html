@@ -150,12 +150,13 @@
   <div class="stage stage-qnx" id="stageB" data-scene="q0">
     <div class="hudwrap"><div class="hud" id="hud">
 
-      <div class="q centered" id="q0">
+      <!---      <div class="q centered" id="q0">
         <h2 class="q-title">The invisible half</h2>
         <p class="lede">DIVA's pitch angle <em>is</em> its speed, its range, its glide ratio. The loop that holds that angle has to tick on time — every time — while a vision pipeline chews camera frames beside it. That is not a job for a best-effort OS. That is a job for <b style="color:var(--amber)">QNX Neutrino</b>.</p>
-      </div>
+      </div>-->
 
-      <div class="q" id="q1">
+
+      <div class="q" id="q0">
         <h2 class="q-title">QNX use nº 1 · Architecture</h2>
         <p class="lede">Resource managers wrap the IMU, depth sensor and camera as clean POSIX devices. Message passing feeds a priority-scheduled control core; actuators get their commands on schedule. Vision hangs off the side — important, never critical.</p>
         <div class="diagram">
@@ -206,7 +207,7 @@
         </div>
       </div>
 
-      <div class="q" id="q2">
+      <div class="q" id="q1">
         <h2 class="q-title">QNX use nº 2 · Determinism</h2>
         <p class="lede">ΔX/ΔZ = cot θ — jitter in the pitch loop literally shortens the glide. QNX's priority scheduler holds the 100 Hz cadence no matter what inference is doing. On a general-purpose kernel, the same loop drifts.</p>
         <div class="diagram">
@@ -214,7 +215,7 @@
         </div>
       </div>
 
-      <div class="q" id="q3">
+      <div class="q" id="q2">
         <h2 class="q-title">QNX use nº 3 · Fault isolation</h2>
         <p class="lede">Under a microkernel, the vision pipeline is just a process in its own address space. It can die mid-dive; the process manager restarts it; the flight loop never misses a tick. On a monolithic stack, that same fault is a drowned robot.</p>
         <div class="diagram">
@@ -250,15 +251,15 @@
         </div>
         <p class="dcap"><b>the demo we'll run for you:</b> kill the vision process mid-glide in the pool. DIVA keeps flying. Try that on a monolith.</p>
       </div>
-
-      <div class="q centered" id="q4">
+<!--      <div class="q centered" id="q4">
         <h2 class="q-title">Why QNX is essential</h2>
         <div class="why3" style="text-align:left">
           <div class="why"><p class="eyebrow">Determinism</p><h4>Fixed-cadence control</h4><p>Priority scheduling and priority inheritance keep the pitch loop mathematically honest — glide ratio depends on it.</p></div>
           <div class="why"><p class="eyebrow">Isolation</p><h4>Crashes stay small</h4><p>User-space drivers and a sandboxed vision pipeline: a bug costs a frame, never the vehicle.</p></div>
           <div class="why"><p class="eyebrow">Engineering</p><h4>A teachable reference</h4><p>POSIX workflow plus kernel trace data to reconcile simulation against pool telemetry.</p></div>
         </div>
-      </div>
+      </div> -->
+
 
     </div></div>
   </div>
@@ -325,7 +326,7 @@
 <script src="src/seabed.js?v=ocean-entry-1"></script>
 <script src="src/keyframes.js?v=reassembly-2"></script>
 <script src="src/scenes-labels.js?v=reassembly-2"></script>
-<script src="src/qnx-hud.js"></script>
+<script src="src/qnx-hud.js?v=q-renumber-1"></script>
 <script src="src/particles.js?v=ocean-entry-1"></script>
 <script src="src/main.js?v=reassembly-2"></script>
 
